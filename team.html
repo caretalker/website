@@ -1,1 +1,599 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テクノロジーで未来を豊かに</title>
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --primary-light: #ff8c42;
+            --primary-dark: #e55a2b;
+            --secondary: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .footer-links {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation Header - Updated to match product page */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray-600);
+            font-weight: 500;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 53, 0.05) 0%, 
+                rgba(255, 140, 66, 0.05) 50%, 
+                rgba(255, 179, 148, 0.05) 100%);
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 140, 66, 0.08) 0%, transparent 50%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #111827;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Section */
+        .card-section {
+            padding: 8rem 0;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            background: #ffffff;
+        }
+
+        .card-section.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-section.light {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        }
+
+        .card-section .cards-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .card-section .cards-container .card {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .card-section .cards-container.grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 30px;
+            max-width: 800px;
+        }
+
+        .card-section .cards-container.grid .card {
+            flex: none;
+            min-width: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .title-underline {
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            margin: 0 auto 20px;
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #4b5563;
+            font-weight: normal;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-section.animate .card {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .card-content {
+            color: #4b5563;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        /* Footer - Updated to match product page */
+        .footer {
+            background: var(--gray-900);
+            color: var(--gray-400);
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-800);
+            color: var(--gray-500);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .navbar {
+                padding: 0.75rem 0;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .hero {
+                padding: 4rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .card-section {
+                padding: 4rem 0;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
+                border-radius: 20px;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .card-section .cards-container {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 0 1rem;
+            }
+
+            .card-section .cards-container.grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                margin-bottom: 3rem;
+            }
+
+            .title {
+                font-size: 1.75rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+
+            .card-title {
+                font-size: 1.125rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header - Updated to match product page -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="Caretalker_Transparent.png" alt="Caretalker Logo">
+                </div>
+                Caretalker
+            </div>
+            <div class="nav-links">
+                <a href="#product" class="nav-link">Product</a>
+                <a href="#team" class="nav-link active">Team</a>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="#login" class="nav-link" style="padding: 0.5rem 1rem; border-radius: 8px; transition: background 0.2s ease;" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">ログイン</a>
+                <a href="#signup" class="cta-button">新規登録</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>テクノロジーで未来を豊かに</h1>
+        </div>
+    </section>
+
+    <!-- Card Section 1 -->
+    <section class="card-section">
+        <div class="header">
+            <h1 class="title">タイトル</h1>
+            <div class="title-underline"></div>
+            <p class="subtitle">サブタイトル</p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">カードタイトル</h2>
+            <div class="card-content">
+                ここにコンテンツを入力してください。
+            </div>
+        </div>
+    </section>
+
+    <!-- Card Section 2 -->
+    <section class="card-section light">
+        <div class="header">
+            <h1 class="title">タイトル２</h1>
+            <div class="title-underline"></div>
+            <p class="subtitle">サブタイトル２</p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">カードタイトル２</h2>
+            <div class="card-content">
+                ここにコンテンツを入力してください。
+            </div>
+        </div>
+    </section>
+
+    <!-- Card Section 3 -->
+    <section class="card-section">
+        <div class="header">
+            <h1 class="title">タイトル３</h1>
+            <div class="title-underline"></div>
+            <p class="subtitle">サブタイトル３</p>
+        </div>
+
+        <div class="cards-container grid">
+            <div class="card">
+                <h2 class="card-title">カードタイトル３-１</h2>
+                <div class="card-content">
+                    ここにコンテンツを入力してください。
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="card-title">カードタイトル３-２</h2>
+                <div class="card-content">
+                    ここにコンテンツを入力してください。
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="card-title">カードタイトル３-３</h2>
+                <div class="card-content">
+                    ここにコンテンツを入力してください。
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="card-title">カードタイトル３-４</h2>
+                <div class="card-content">
+                    ここにコンテンツを入力してください。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Card Section 4 -->
+    <section class="card-section light">
+        <div class="header">
+            <h1 class="title">タイトル４</h1>
+            <div class="title-underline"></div>
+            <p class="subtitle">サブタイトル４</p>
+        </div>
+
+        <div class="cards-container">
+            <div class="card">
+                <h2 class="card-title">カードタイトル４-１</h2>
+                <div class="card-content">
+                    ここにコンテンツを入力してください。
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="card-title">カードタイトル４-２</h2>
+                <div class="card-content">
+                    ここにコンテンツを入力してください。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer - Updated to match product page -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">会社概要</a>
+                <a href="#" class="footer-link">プライバシーポリシー</a>
+                <a href="#" class="footer-link">利用規約</a>
+                <a href="#" class="footer-link">お問い合わせ</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Caretalker Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // スクロールアニメーションの設定
+        function animateOnScroll() {
+            const sections = document.querySelectorAll('.card-section');
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                // セクションが画面に入ったらアニメーションを開始
+                if (rect.top < windowHeight * 0.8) {
+                    section.classList.add('animate');
+                }
+            });
+        }
+
+        // スクロールイベントリスナー
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // ページ読み込み時にも実行
+        window.addEventListener('load', animateOnScroll);
+        
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
