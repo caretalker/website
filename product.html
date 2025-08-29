@@ -290,40 +290,53 @@
             position: relative;
             height: 600px;
             margin-top: 4rem;
+            touch-action: pan-y;
+            user-select: none;
+            overflow: hidden;
         }
 
         .features-container {
-            display: flex;
-            transition: transform 0.5s ease;
+            position: relative;
             height: 100%;
+            width: 100%;
         }
 
         .feature-slide {
-            min-width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
             background: linear-gradient(135deg, 
                 rgba(255, 107, 53, 0.05) 0%, 
                 rgba(255, 140, 66, 0.05) 50%, 
                 rgba(255, 165, 85, 0.05) 100%);
             border-radius: 32px;
             overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .feature-slide.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .feature-content {
             display: flex;
             align-items: center;
-            gap: 6rem;
+            gap: 4rem;
             max-width: 900px;
             width: 100%;
             padding: 0 4rem;
         }
 
         .feature-visual {
-            flex: 1;
+            flex: 0.8;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -349,17 +362,17 @@
         .feature-illustration::before {
             content: '';
             position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 140, 66, 0.1));
-            border-radius: 32px;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.08), rgba(255, 140, 66, 0.08));
+            border-radius: 28px;
             z-index: -1;
         }
 
         .feature-info {
-            flex: 1;
+            flex: 1.2;
             text-align: left;
         }
 
@@ -423,35 +436,51 @@
         }
 
         .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             width: 50px;
             height: 50px;
             border: none;
             border-radius: 50%;
-            background: var(--gray-200);
-            color: var(--gray-600);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--gray-700);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
             transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .carousel-btn:hover {
             background: var(--primary);
             color: white;
-            transform: scale(1.1);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
         }
 
         .carousel-btn:disabled {
-            opacity: 0.3;
+            opacity: 0.4;
             cursor: not-allowed;
-            transform: none;
+            transform: translateY(-50%);
         }
 
         .carousel-btn:disabled:hover {
-            background: var(--gray-200);
-            color: var(--gray-600);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--gray-700);
+            transform: translateY(-50%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        #prevBtn {
+            left: 20px;
+        }
+
+        #nextBtn {
+            right: 20px;
         }
 
         .carousel-dots {
@@ -476,15 +505,6 @@
         .dot.active {
             background: var(--primary);
             transform: scale(1.2);
-        }
-
-        /* Touch/swipe support */
-        .features-carousel {
-            position: relative;
-            height: 600px;
-            margin-top: 4rem;
-            touch-action: pan-y;
-            user-select: none;
         }
 
         /* How it Works */
@@ -667,16 +687,7 @@
             .feature-illustration {
                 width: 200px;
                 height: 200px;
-                border-radius: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 4rem;
-                position: relative;
-                background: linear-gradient(135deg, var(--primary), var(--primary-light));
-                color: white;
-                box-shadow: 0 15px 40px rgba(255, 107, 53, 0.25);
-                opacity: 0.85;
+                font-size: 5rem;
             }
 
             .feature-title {
@@ -763,7 +774,7 @@
             <div class="features-carousel">
                 <div class="features-container" id="featuresContainer">
                     <!-- Slide 1: 対話で体調をうかがう -->
-                    <div class="feature-slide">
+                    <div class="feature-slide active">
                         <div class="feature-content">
                             <div class="feature-visual">
                                 <div class="feature-illustration">
@@ -836,15 +847,16 @@
                 </div>
 
                 <div class="carousel-controls">
-                    <button class="carousel-btn" id="prevBtn">‹</button>
                     <div class="carousel-dots">
                         <div class="dot active" onclick="goToSlide(0)"></div>
                         <div class="dot" onclick="goToSlide(1)"></div>
                         <div class="dot" onclick="goToSlide(2)"></div>
                         <div class="dot" onclick="goToSlide(3)"></div>
                     </div>
-                    <button class="carousel-btn" id="nextBtn">›</button>
                 </div>
+                
+                <button class="carousel-btn" id="prevBtn">‹</button>
+                <button class="carousel-btn" id="nextBtn">›</button>
             </div>
         </div>
     </section>
@@ -963,8 +975,12 @@
         const dots = document.querySelectorAll('.dot');
 
         function updateCarousel() {
-            const translateX = -currentSlide * 100;
-            featuresContainer.style.transform = `translateX(${translateX}%)`;
+            const slides = document.querySelectorAll('.feature-slide');
+            
+            // Remove active class from all slides
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
             
             // Update dots
             dots.forEach((dot, index) => {
@@ -1019,10 +1035,6 @@
             startY = e.touches[0].clientY;
         });
 
-        featuresContainer.addEventListener('touchmove', (e) => {
-            e.preventDefault(); // Prevent scrolling while swiping
-        });
-
         featuresContainer.addEventListener('touchend', (e) => {
             endX = e.changedTouches[0].clientX;
             endY = e.changedTouches[0].clientY;
@@ -1048,11 +1060,6 @@
             isDragging = true;
             mouseStartX = e.clientX;
             featuresContainer.style.cursor = 'grabbing';
-        });
-
-        featuresContainer.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            e.preventDefault();
         });
 
         featuresContainer.addEventListener('mouseup', (e) => {
@@ -1081,7 +1088,6 @@
 
         // Initialize carousel
         updateCarousel();
-        featuresContainer.style.cursor = 'grab';
     </script>
 </body>
 </html>
