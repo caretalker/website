@@ -350,7 +350,96 @@
             border-top: 1px solid var(--gray-800);
             color: var(--gray-500);
         }
+        /* 活動カード用のスタイル */
+        .activity-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
+        .activity-card {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+        }
+
+        .card-section.animate .activity-card {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .activity-card.milestone {
+            border: 2px solid #ff6b35;
+            background: linear-gradient(135deg, #fff5f3 0%, #ffffff 100%);
+        }
+
+        .activity-card.milestone::before {
+            content: '⭐';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .activity-month {
+            background: linear-gradient(135deg, #ff6b35, #ff8c42);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .activity-month::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #ff6b35;
+        }
+
+        .activity-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .activity-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .activity-content p {
+            color: #4b5563;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .activity-content strong {
+            color: #ff6b35;
+            font-weight: 700;
+        }
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-links {
@@ -426,6 +515,50 @@
                 font-size: 1.125rem;
             }
         }
+        @media (max-width: 768px) {
+            .activity-cards-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+            
+            .activity-card {
+                border-radius: 12px;
+            }
+            
+            .activity-month {
+                padding: 0.8rem 1rem;
+                font-size: 1.1rem;
+            }
+            
+            .activity-content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .activity-content h3 {
+                font-size: 1.1rem;
+            }
+            }
+
+            @media (max-width: 480px) {
+                .activity-content {
+                    padding: 1.2rem 0.8rem;
+                }
+                
+                .activity-month {
+                    padding: 0.7rem 0.8rem;
+                    font-size: 1rem;
+                }
+                
+                .activity-content h3 {
+                    font-size: 1rem;
+                    margin-bottom: 0.8rem;
+                }
+                
+                .activity-content p {
+                    font-size: 0.9rem;
+                }
+            }
     </style>
 </head>
 <body>
@@ -443,8 +576,7 @@
                 <a href="#team" class="nav-link active">Team</a>
             </div>
             <div style="display: flex; gap: 0.5rem;">
-                <a href="#login" class="nav-link" style="padding: 0.5rem 1rem; border-radius: 8px; transition: background 0.2s ease;" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">ログイン</a>
-                <a href="#signup" class="cta-button">新規登録</a>
+                <a href="https://caretalker.github.io/demo/demo_index.html" class="cta-button">デモ版</a>
             </div>
         </div>
     </nav>
@@ -459,15 +591,19 @@
     <!-- Card Section 1 -->
     <section class="card-section">
         <div class="header">
-            <h1 class="title">タイトル</h1>
+            <h1 class="title">ABOUT US</h1>
             <div class="title-underline"></div>
-            <p class="subtitle">サブタイトル</p>
+            <p class="subtitle">私たちについて</p>
         </div>
 
         <div class="card">
-            <h2 class="card-title">カードタイトル</h2>
-            <div class="card-content">
-                ここにコンテンツを入力してください。
+            <div class="card-content" style="text-align: left;">
+                <p>　私たちは高専で出会い、テクノロジーを通じて社会の課題を解決することを目指して活動している学生チームです。
+                これまでに、認知症の徘徊を未然に防ぐ見守りシステム「CareTalker」の開発に取り組むなど、福祉や社会課題の現場に根ざしたプロダクトづくりを進めてきました。</p>
+                <br>
+                <p>　私たちの強みは、ソフトウェアからハードウェア、サーバーやインフラの設計までを一貫して行える技術力にあります。アプリケーション開発、回路設計、クラウド環境の構築といった幅広い領域に対応し、新しいテクノロジーを常に学びながらアップデートを続けています。</p>
+                <br>
+                <p>　学生チームならではの柔軟な発想とスピード感を活かし、依頼者の課題に合わせた最適なソリューションを提供します。「どんなに小さなアイデアでも形にする」――その姿勢で、受託開発を通じて企業や社会の成長に貢献していきます。</p>
             </div>
         </div>
     </section>
@@ -475,15 +611,26 @@
     <!-- Card Section 2 -->
     <section class="card-section light">
         <div class="header">
-            <h1 class="title">タイトル２</h1>
+            <h1 class="title">代表メッセージ</h1>
             <div class="title-underline"></div>
-            <p class="subtitle">サブタイトル２</p>
         </div>
 
         <div class="card">
-            <h2 class="card-title">カードタイトル２</h2>
-            <div class="card-content">
-                ここにコンテンツを入力してください。
+            <div class="card-content" style="text-align: left;">
+                <p>　私は「テクノロジーで社会の課題を解決する」ことを目標に活動しています。受託開発は単なる作業の提供ではなく、依頼者の皆さまと共に未来をつくる共同作業だと考えています。</p>
+                <br>
+                <p>
+                　私が特に力を入れている取り組みが、認知症の徘徊を未然に防ぐ見守りシステム 「CareTalker」 です。
+                社会課題の解決から出発し、AI・ハードウェア・クラウドを組み合わせた実用的なプロダクトとして形にしてきました。</p>
+                <br>
+                <p>
+                　学生という立場だからこそ、固定概念にとらわれない柔軟な発想で新しい挑戦に取り組むことができます。
+                同時に、確かな技術力と責任感をもって最後までやりきることを大切にしています。</p>
+                <br>
+                <P>
+                　社内業務の効率化や売上向上につながる仕組みづくりを通じて、企業や社会に貢献していきたいと考えています。
+                どんなに小さなアイデアでも、一緒に形にしていけるパートナーでありたい。
+                そうした思いで、皆さまからのご相談を心よりお待ちしています。</P>
             </div>
         </div>
     </section>
@@ -491,58 +638,82 @@
     <!-- Card Section 3 -->
     <section class="card-section">
         <div class="header">
-            <h1 class="title">タイトル３</h1>
+            <h1 class="title">チーム紹介</h1>
             <div class="title-underline"></div>
-            <p class="subtitle">サブタイトル３</p>
+            <p class="subtitle">専門分野</p>
         </div>
 
         <div class="cards-container grid">
             <div class="card">
-                <h2 class="card-title">カードタイトル３-１</h2>
+                <h2 class="card-title">ハードウェア開発</h2>
                 <div class="card-content">
-                    ここにコンテンツを入力してください。
+                    
                 </div>
             </div>
             <div class="card">
-                <h2 class="card-title">カードタイトル３-２</h2>
+                <h2 class="card-title">バックエンド開発</h2>
                 <div class="card-content">
-                    ここにコンテンツを入力してください。
+                    
                 </div>
             </div>
             <div class="card">
-                <h2 class="card-title">カードタイトル３-３</h2>
+                <h2 class="card-title">AIシステム開発</h2>
                 <div class="card-content">
-                    ここにコンテンツを入力してください。
+                    
                 </div>
             </div>
             <div class="card">
-                <h2 class="card-title">カードタイトル３-４</h2>
+                <h2 class="card-title">UIデザイン</h2>
                 <div class="card-content">
-                    ここにコンテンツを入力してください。
+                    
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Card Section 4 -->
+    <!-- Card Section 4 - 実績・活動紹介（タイムライン形式に変更） -->
     <section class="card-section light">
         <div class="header">
-            <h1 class="title">タイトル４</h1>
+            <h1 class="title">実績・活動紹介</h1>
             <div class="title-underline"></div>
-            <p class="subtitle">サブタイトル４</p>
+            <p class="subtitle">プロジェクトの歩み</p>
         </div>
 
-        <div class="cards-container">
-            <div class="card">
-                <h2 class="card-title">カードタイトル４-１</h2>
-                <div class="card-content">
-                    ここにコンテンツを入力してください。
+        <div class="activity-cards-container">
+            <div class="activity-card">
+                <div class="activity-month">4月</div>
+                <div class="activity-content">
+                    <h3>プロジェクト開始</h3>
+                    <p>CareTalkerプロジェクトが本格始動</p>
                 </div>
             </div>
-            <div class="card">
-                <h2 class="card-title">カードタイトル４-２</h2>
-                <div class="card-content">
-                    ここにコンテンツを入力してください。
+            
+            <div class="activity-card">
+                <div class="activity-month">6月</div>
+                <div class="activity-content">
+                    <h3>現場調査・ヒアリング</h3>
+                    <p>6/12 カーロガーデン<br>
+                    6/14 サルビア<br>
+                    6月下旬 ヒアリング実施</p>
+                </div>
+            </div>
+            
+            <div class="activity-card milestone">
+                <div class="activity-month">7月</div>
+                <div class="activity-content">
+                    <h3>開発フェーズ移行</h3>
+                    <p>7/3 アンジェンス高尾<br>
+                    <strong>要件定義終了・開発開始</strong><br><br>
+                    7/28 日本AIメディカル学会参加</p>
+                </div>
+            </div>
+            
+            <div class="activity-card milestone">
+                <div class="activity-month">8月</div>
+                <div class="activity-content">
+                    <h3>プロトタイプ完成</h3>
+                    <p>8/9 <strong>プロトタイプ完成（初号機）</strong><br><br>
+                    8/30 謎のイベント出展</p>
                 </div>
             </div>
         </div>
